@@ -7,7 +7,7 @@
 *@author [wangyanfang] <yanfang.wang@dfrobot.com>
 *@version V1.0
 *@date 2020-12-1
-*@url 
+*@url https://github.com/cdjq/DFRobot_SGP40
 */
 
 #include <DFRobot_SGP40.h>
@@ -54,21 +54,11 @@ uint32_t DFRobot_SGP40::setRhT(float relativeHumidityRH, float temperatureC)
 uint16_t DFRobot_SGP40::getRawVoc(void)
 {
   uint16_t sraw;
-  //setRhT(relativeHumidity,temperature);
   int32_t tempC = temperature*1000;
   int32_t rh = relativeHumidity*1000;
   sgp40_measure_raw_with_rht_blocking_read(rh,tempC,&sraw);
   return sraw;
 }
-
-// /**
-//  * @brief  测量湿度补偿后的原始VOC值以及周围的相对湿度和温度值
-//  * @return 测量到的原始VOC值，范围为范围为0-65535,单位为ticks
-//  */
-//uint16_t DFRobot_SGP40::getRawVocAndRhT(void)
-//{
-//  
-//}
 
 
  /**
@@ -80,21 +70,10 @@ uint16_t DFRobot_SGP40::getVocIndex(void)
   int32_t voc_index;
   int32_t tempC = temperature*1000;
   int32_t rh = relativeHumidity*1000;
-  //DFRobot_SGP40::setRhT(float relativeHumidityRH, float temperatureC);
   sensirion_measure_voc_index_with_rh_t(&voc_index,&rh,&tempC);
   return voc_index;
 }
 
-// /**
-//  * @brief  测量湿度补偿后的VOC指数以及周围的相对湿度和温度值
-//  * @param  relativeHumidity  环境相对湿度值，相对湿度单位%RH
-//  * @param  temperature  环境温度值，温度单位°C
-//  * @return 测量到的VOC指数，范围为0-500
-//  */
-//uint16_t DFRobot_SGP40::vocIndexRhT(uint8_t relativeHumidityRH=50,uint8_t temperatureC=25)
-//{
-//  sensirion_measure_voc_index_with_rh_t(&voc_index,&relativeHumidity,&temperature);
-//}
 
 
 

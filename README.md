@@ -2,11 +2,11 @@
 SGP40 是数字I2C接口的传感器。<br>
 SGP40 能测量空气中的voc总量，输出的voc指数值可以指示空气质量好坏。
       输出的voc指数值范围为0-500，100为典型空气质量值，数值越大空气越差。详细的数值意义请看下面的图片。<br>
-SGP40 自带VOC算法；启动时间快（小于60秒）；低功耗，散热低；十年的超长使用寿命。<br>
+SGP40 自带VOC算法；启动时间快（小于60秒）；低功耗，散热低；十年的超长使用寿命；无需外部校准。<br>
 
 ![voc指数与空气质量对照表](https://github.com/cdjq/DFRobot_SGP40/raw/master/resources/images/vocIndex_airQuality.png)
 
-## 产品链接（链接到英文商城）
+## 产品链接（https://www.dfrobot.com/）
     SKU：SEN0392
 
 ## DFRobot_SGP40 Library for Arduino
@@ -26,14 +26,14 @@ Provide an Arduino library for the SGP40 modules.
 <content>
 
 ## Summary
-VOC指数可通过SGP40的I2C接口读出。
-这些数据将通过串口打印出来。
+VOC指数可通过SGP40的I2C接口读出。这些数据将通过串口打印出来。
 
 ## Feature
-1. 超低功耗
-2. I2C数字接口
-3. voc指数范围为0-500
+1. 自带voc算法
+2. 无需外部校准
+3. 超低功耗，散热低
 4. 启动时间<60秒
+5. 十年的超长使用寿命
 
 ## Installation
 
@@ -63,7 +63,7 @@ To use this library, first download the library file, paste it into the \Arduino
 
  /**
   * @brief  测量湿度补偿后的原始VOC值
-  * @return 测量到的原始VOC值，范围为0-65535，单位为：ticks（此处想要修改使其变为ppm为单位的值）
+  * @return 测量到的原始VOC值，范围为0-65535，单位为：ticks
   */
   uint16_t getRawVoc(void);
 
