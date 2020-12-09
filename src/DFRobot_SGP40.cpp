@@ -24,14 +24,14 @@ int16_t DFRobot_SGP40::begin(void)
   sensirion_init_sensors();//初始化SGP40,SHT,VOC算法，返回0初始化成功，其他值初始化失败
 }
 
- /**
-  * @brief  获得序列号函数
-  * @return 返回序列号
-  */
-int16_t DFRobot_SGP40::getSerial(void)
-{
-  int16_t sgp40_probe(void);
-}
+// /**
+//  * @brief  获得序列号函数
+//  * @return 返回序列号
+//  */
+//int16_t DFRobot_SGP40::getSerial(void)
+//{
+//  int16_t sgp40_probe(void);
+//}
 
  /**
   * @brief  设置环境温湿度

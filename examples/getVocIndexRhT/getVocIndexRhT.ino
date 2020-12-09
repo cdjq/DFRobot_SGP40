@@ -1,6 +1,6 @@
 /*!
- * @file getVocIndex.ino
- * @brief 读取环境voc指数，范围是0-500;本示例中无需输入环境温湿度进行校准。
+ * @file getVocIndexRhT.ino
+ * @brief 读取环境voc指数，范围是0-500;本示例中需输入环境温湿度进行校准。
  * @n 实验现象：每秒读取一次环境voc指数，并打印到串口
  *
  * @copyright	Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
@@ -19,7 +19,7 @@ void setup() {
   
   while (sgp.begin()) {
     Serial.println("initialization failed: ");
-    delay(1000); /* 等待1秒 */
+    delay(1000); /* 等待1秒*/
   }
   //sgp.getSerial();//返回3个序列号
   //Serial.println("initialization successful");
@@ -27,6 +27,10 @@ void setup() {
 
 /* Run one measurement per second */
 void loop() {
+  
+  //输入环境温湿度进行校准，可以得到更加精确的voc测量结果
+  sgp.setRhT(/*relativeHumidityRH = */ 48,/*temperatureC = */ 22);
+  
   //串口打印voc指数
   Serial.print("voc指数为：");
   Serial.println(sgp.getVocIndex());

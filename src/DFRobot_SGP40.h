@@ -44,11 +44,11 @@ public:
   */
   int16_t begin(void);
   
- /**
-  * @brief  获得序列号函数
-  * @return 返回序列号
-  */
-  int16_t getSerial(void);
+// /**
+//  * @brief  获得序列号函数
+//  * @return 返回序列号
+//  */
+//  int16_t getSerial(void);
   
  /**
   * @brief  设置温湿度函数
@@ -64,12 +64,6 @@ public:
   */
   uint16_t getRawVoc(void);
   
-// /**
-//  * @brief  测量湿度补偿后的原始VOC值以及周围的相对湿度和温度值
-//  * @return 测量到的原始VOC值，范围为
-//  */
-//  uint16_t getRawVocAndRhT(void);
-  
   
   /**
    * @brief  测量湿度补偿后的VOC指数
@@ -78,11 +72,6 @@ public:
   uint16_t getVocIndex(void);
   
   
-// /**
-//  * @brief  测量湿度补偿后的VOC指数以及周围的相对湿度和温度值
-//  * @return 测量到的VOC指数，范围为0-500
-//  */
-//  uint16_t getVocIndexAndRhT(void);
   private:
     float relativeHumidity = 50;
     float temperature = 25;
