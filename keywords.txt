@@ -1,0 +1,30 @@
+#######################################
+# Syntax Coloring Map For DFRobot_Sensor
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+DFRobot_SGP40	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+getSerial	KEYWORD2
+setRhT	KEYWORD2
+getRawVoc	KEYWORD2
+getVocIndex	KEYWORD2
+
+
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
