@@ -29,15 +29,14 @@ Provide an Arduino library for the SGP40 modules.
 VOC指数可通过SGP40的I2C接口读出。这些数据将通过串口打印出来。
 
 ## Feature
-1. 自带voc算法
+1. 自带voc算法，可直接输出voc指数
 2. 无需外部校准
-3. 超低功耗，散热低
+3. 超低功耗(2.6mA)，散热低
 4. 启动时间<60秒
 5. 十年的超长使用寿命
 
 ## Installation
 
-Download the library ZIP file and unzip it to the Arduino folder of the library.<br>
 To use this library, first download the library file, paste it into the \Arduino\libraries directory, then open the examples folder and run the demo in the folder.
 
 ## Methods
