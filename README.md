@@ -1,11 +1,4 @@
 # DFRobot_SGP40
-SGP40 是数字I2C接口的传感器。<br>
-SGP40 能测量空气中的voc总量，输出的voc指数值可以指示空气质量好坏。
-      输出的voc指数值范围为0-500，100为典型空气质量值，数值越大空气越差。详细的数值意义请看下面的图片。<br>
-SGP40 自带VOC算法；启动时间快（小于60秒）；低功耗，散热低；十年的超长使用寿命；无需外部校准。<br>
-
-![voc指数与空气质量对照表](https://github.com/cdjq/DFRobot_SGP40/raw/master/resources/images/vocIndex_airQuality.png)
-
 ## 产品链接（https://www.dfrobot.com/）
     SKU：SEN0392
 
@@ -26,14 +19,12 @@ Provide an Arduino library for the SGP40 modules.
 <content>
 
 ## Summary
-VOC指数可通过SGP40的I2C接口读出。这些数据将通过串口打印出来。
+VOC indices can be read through SGP40's I2C interface. The data will be printed through a serial port.
 
 ## Feature
-1. 自带voc算法，可直接输出voc指数
-2. 无需外部校准
-3. 超低功耗(2.6mA)，散热低
-4. 启动时间<60秒
-5. 十年的超长使用寿命
+
+1.  Set ambient temperature and humidity for accurate calibration. Relative humidity unit: %RH, range: 0-100; Temperature unit: °C, range: -10~50
+2.  Read VOC index , range 0-500
 
 ## Installation
 
@@ -43,34 +34,32 @@ To use this library, first download the library file, paste it into the \Arduino
 
 ```C++
 
-#include "DFRobot_SGP40.h"
-
- /**
-  * @brief  初始化函数
-  * @return 返回0表示初始化成功，返回其他值表示初始化失败
-  */
-  int16_t begin(void);
-
-
- /**
-  * @brief  设置温湿度函数
-  * @param  relativeHumidityRH  当前环境相对湿度值，范围0-100，单位：%RH
-  * @param  temperatureC  当前环境温度值，范围-10~50，单位：°C
-  * @return 返回0表示设置成功，返回其他值表示设置失败
-  */
-  uint32_t setRhT(float relativeHumidityRH=50, float temperatureC=25);
-
- /**
-  * @brief  测量湿度补偿后的原始VOC值
-  * @return 测量到的原始VOC值，范围为0-65535，单位为：ticks
-  */
-  uint16_t getRawVoc(void);
-
   /**
-   * @brief  测量湿度补偿后的VOC指数
-   * @return 测量到的VOC指数，范围为0-500
+   * @brief  Initialization function
+   * @return A return of 0 indicates successful initialization and a return of any other value indicates unsuccessful initialization.
    */
-  uint16_t getVocIndex(void);
+  uint16_t begin(void);
+  /**
+   * @brief  Set the temperature and humidity function
+   * @param  relativeHumidityRH  Current environmental relative humidity value, range 0-100, unit: %RH
+   * @param  temperatureC  Current ambient temperature, range -10~50, unit: °C
+   * @return A return of 0 indicates a successful setting and any other value indicates a failed setting
+   */
+  uint32_t setRhT(float relativeHumidity = 50,float temperatureC=25);
+  /**
+   * @brief  Measure VOC index after humidity compensation
+   * @return The VOC index measured ,ranged from 0 to 500
+   */
+  int32_t getVoclndex(void);
+  /**
+   * @brief  Sensor self-test
+   * @return 0:all tests passed successfully; 1：one or more tests have failed
+   */
+  uint16_t spg40MeasureTest(void);
+  /**
+   * @brief  Soft Reset
+   */
+  void softReset(void);
 
 ```
 
@@ -80,15 +69,15 @@ To use this library, first download the library file, paste it into the \Arduino
 MCU                | Work Well | Work Wrong | Untested  | Remarks
 ------------------ | :----------: | :----------: | :---------: | -----
 Arduino uno |       √      |             |            | 
-RaspberryPi |       √      |             |            | 
+FireBeetle esp32 |       √      |             |            | 
 
 
 ## History
 
-- data 2020-12-9
-- version V0.1
+- data 2020-12-18
+- version V1.0
 
 
 ## Credits
 
-·Written by wangyanfang [yanfang.wang@dfrobot.com],2020,(Welcome to our [website](https://www.dfrobot.com/))
+·Written by [yangfeng]<fary_young@outlook.com>,2020,(Welcome to our [website](https://www.dfrobot.com/))

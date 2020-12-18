@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map For DFRobot_Sensor
+# Syntax Coloring Map 
 #######################################
 
 #######################################
@@ -9,22 +9,14 @@
 DFRobot_SGP40	KEYWORD1
 
 #######################################
-# Methods and Functions (KEYWORD2)
+# Methods and Functions  (KEYWORD2)
 #######################################
 
 begin	KEYWORD2
-getSerial	KEYWORD2
 setRhT	KEYWORD2
-getRawVoc	KEYWORD2
-getVocIndex	KEYWORD2
-
-
-
+getVoclndex	KEYWORD2
+spg40MeasureTest	KEYWORD2
+softReset	KEYWORD2
 #######################################
-# Instances (KEYWORD2)
-#######################################
-
-
-#######################################
-# Constants (LITERAL1)
+# Constants   (LITERAL1)
 #######################################

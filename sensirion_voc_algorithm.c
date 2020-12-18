@@ -30,7 +30,6 @@
  */
 
 #include "sensirion_voc_algorithm.h"
-
 /* The fixed point arithmetic parts of this code were originally created by
  * https://github.com/PetteriAimonen/libfixmath
  */
@@ -422,7 +421,7 @@ void VocAlgorithm_process(VocAlgorithmParams* params, int32_t sraw,
         }
     }
     *voc_index = (fix16_cast_to_int((params->mVoc_Index + F16(0.5))));
-    return;
+	return ;
 }
 
 static void
