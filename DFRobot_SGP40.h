@@ -47,7 +47,7 @@ public:
    * @brief  Sensor self-test
    * @return 0:all tests passed successfully; 1：one or more tests have failed
    */
-  uint16_t spg40MeasureTest(void);
+  uint16_t sgp40MeasureTest(void);
   /**
    * @brief  Soft Reset
    */

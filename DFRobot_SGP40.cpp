@@ -27,7 +27,7 @@ uint16_t DFRobot_SGP40::begin(void)
   while(millis()-time<10000){
     getVoclndex();
   }
-  return spg40MeasureTest();
+  return sgp40MeasureTest();
 }
 uint8_t DFRobot_SGP40::calcCrc(uint8_t data1,uint8_t data2)
 {
@@ -112,13 +112,13 @@ void DFRobot_SGP40::spg40HeaterOff()
   uint8_t testCommand[2]={0x36,0x15};
   IICWrite(testCommand,2);
 }
-uint16_t DFRobot_SGP40::spg40MeasureTest()
+uint16_t DFRobot_SGP40::sgp40MeasureTest()
 {
   uint8_t testCommand[2]={0x28,0x0E};
   uint16_t value=0;
   IICWrite(testCommand,2);
   delay(250);
-  if(getIICValue()==0xD400){
+  if(getIICValue()==0xD400){//0xD400 成功
     return 0;
   }
   return 1;
@@ -127,6 +127,8 @@ void DFRobot_SGP40::softReset()
 {
   uint8_t testCommand[2]={0x00,0x06};
   IICWrite(testCommand,2);
+  _relativeHumidity = 50;
+  _temperatureC = 25;
 }
 
 
