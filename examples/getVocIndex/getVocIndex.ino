@@ -37,8 +37,8 @@ void setup() {
   /* 
    * @breif 设置当前环境中的相对湿度和温度
    * @note  传感器内部已进行温湿度校准，若需要得到更精确的voc指数，请打开注释
-   * @param relativeHumidity：相对湿度，指空气中的水汽含量。范围：0-100，单位：%，例如：50%
-   * @param temperature：温度。单位：°C，例如：20°C
+   * @param relativeHumidity：相对湿度，指空气中的水汽含量。范围：0-100，单位：%RH，例如：50%
+   * @param temperature：温度。范围：-10~50，单位：°C，例如：20°C
    */
   //mySgp40.setRhT(/*relativeHumidity = */ 50, /*temperature = */ 20);
   
