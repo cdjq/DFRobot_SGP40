@@ -12,24 +12,24 @@
 #include <DFRobot_SGP40.h>
 #include "sensirion_arch_config.h"
 #include "sensirion_voc_algorithm.h"
-DFRobot_SGP40::DFRobot_SGP40(TwoWire *pWire)
+DFRobot_SGP40::DFRobot_SGP40(TwoWire *pWire):
+_pWire(pWire),_deviceAddr(DFRobot_SGP40_ICC_ADDR),_relativeHumidity(50),_temperatureC(25)
 {
-  _pWire = pWire;
-  _deviceAddr = DFRobot_SGP40_ICC_ADDR;
-  _relativeHumidity = 50;
-  _temperatureC = 25;
+
 }
-uint16_t DFRobot_SGP40::begin(void)
+
+uint16_t DFRobot_SGP40::begin(uint32_t duration)
 {
   _pWire->begin();
   VocAlgorithm_init(&_vocaAgorithmParams);
   int time = millis();
-  while(millis()-time<10000){
+  while(millis()-time<duration){
     getVoclndex();
   }
   return sgp40MeasureTest();
 }
-uint8_t DFRobot_SGP40::calcCrc(uint8_t data1,uint8_t data2)
+
+uint8_t DFRobot_SGP40::checkCrc(uint8_t data1,uint8_t data2)
 {
   uint8_t crc = 0xFF;
   uint8_t data[2];
@@ -47,36 +47,40 @@ uint8_t DFRobot_SGP40::calcCrc(uint8_t data1,uint8_t data2)
   }
   return crc;
 }
+
 uint32_t DFRobot_SGP40::setRhT(float relativeHumidity, float temperatureC)
 {
   _relativeHumidity = relativeHumidity;
   _temperatureC = temperatureC;
-  dataTransformation();
-  IICWrite(_rhTemData,6);
+  dataTransform();
+  write(_rhTemData,6);
   return 0;
 }
-void DFRobot_SGP40::dataTransformation(void)
+
+void DFRobot_SGP40::dataTransform(void)
 {
   uint16_t RH = (uint16_t)((_relativeHumidity*65535)/100+0.5);
   uint16_t TemC = (uint16_t)((_temperatureC+45)*(65535/175)+0.5);
-  _rhTemData[0]=0x26;
-  _rhTemData[1]=0x0F;
-  _rhTemData[2]=RH>>8;
-  _rhTemData[3]=RH&0x00FF;
-  _rhTemData[4]=calcCrc(_rhTemData[2],_rhTemData[3]);
-  _rhTemData[5]=TemC>>8;
-  _rhTemData[6]=TemC&0x00FF;
-  _rhTemData[7]=calcCrc(_rhTemData[5],_rhTemData[6]);
+  _rhTemData[INDEX_MEASURE_RAW_H]=CMD_MEASURE_RAW_H;
+  _rhTemData[INDEX_MEASURE_RAW_L]=CMD_MEASURE_RAW_L;
+  _rhTemData[INDEX_RH_H]=RH>>8;
+  _rhTemData[INDEX_RH_L]=RH&0x00FF;
+  _rhTemData[INDEX_RH_CHECK_CRC]=checkCrc(_rhTemData[INDEX_RH_H],_rhTemData[INDEX_RH_L]);
+  _rhTemData[INDEX_TEM_H]=TemC>>8;
+  _rhTemData[INDEX_TEM_L]=TemC&0x00FF;
+  _rhTemData[INDEX_TEM_CHECK_CRC]=checkCrc(_rhTemData[INDEX_TEM_H],_rhTemData[INDEX_TEM_L]);
 }
-void DFRobot_SGP40::IICWrite(uint8_t* Command,uint8_t len)
+
+void DFRobot_SGP40::write(uint8_t* cmd,uint8_t len)
 {
   _pWire->beginTransmission(_deviceAddr);
   for(uint8_t i=0;i<len;i++){
-    _pWire->write(Command[i]);
+    _pWire->write(cmd[i]);
   }
   _pWire->endTransmission();
 }
-uint16_t DFRobot_SGP40::getIICValue()
+
+uint16_t DFRobot_SGP40::readRawData()
 {
   uint8_t data[3]={0,0,0};
   uint16_t value=0;
@@ -87,18 +91,19 @@ uint16_t DFRobot_SGP40::getIICValue()
   value=(data[0]<<8)|data[1];
   return value;
 }
+
 int32_t DFRobot_SGP40::getVoclndex(void)
 {
   uint8_t data[3]={0,0,0};
   int32_t value;
   int32_t vocIndex=0;
-  dataTransformation();
+  dataTransform();
   _pWire->beginTransmission(_deviceAddr);
   for(int i=0;i<8;i++){
     _pWire->write(_rhTemData[i]);
   }
   _pWire->endTransmission();
-  delay(30);
+  delay(DURATION_READ_RAW_VOC);
   _pWire->requestFrom(_deviceAddr,3);
   for(uint8_t i=0;i<3;i++){
     data[i]=_pWire->read();
@@ -107,26 +112,31 @@ int32_t DFRobot_SGP40::getVoclndex(void)
   VocAlgorithm_process(&_vocaAgorithmParams, value, &vocIndex);
   return vocIndex;
 }
+
+
 void DFRobot_SGP40::spg40HeaterOff()
 {
-  uint8_t testCommand[2]={0x36,0x15};
-  IICWrite(testCommand,2);
+  uint8_t testCommand[CMD_HEATER_OFF_SIZE]={CMD_HEATER_OFF_H,CMD_HEATER_OFF_L};
+  write(testCommand,CMD_HEATER_OFF_SIZE);
 }
+
+
 uint16_t DFRobot_SGP40::sgp40MeasureTest()
 {
-  uint8_t testCommand[2]={0x28,0x0E};
+  uint8_t testCommand[CMD_MEASURE_TEST_SIZE]={CMD_MEASURE_TEST_H,CMD_MEASURE_TEST_L};
   uint16_t value=0;
-  IICWrite(testCommand,2);
-  delay(250);
-  if(getIICValue()==0xD400){//0xD400 成功
+  write(testCommand,CMD_MEASURE_TEST_SIZE);
+  delay(DURATION_WAIT_MEASURE_TEST);
+  if(readRawData()==TEST_OK){
     return 0;
   }
   return 1;
 }
+
 void DFRobot_SGP40::softReset()
 {
-  uint8_t testCommand[2]={0x00,0x06};
-  IICWrite(testCommand,2);
+  uint8_t testCommand[CMD_SOFT_RESET_SIZE]={CMD_SOFT_RESET_H,CMD_SOFT_RESET_L};
+  write(testCommand,CMD_SOFT_RESET_SIZE);
   _relativeHumidity = 50;
   _temperatureC = 25;
 }
