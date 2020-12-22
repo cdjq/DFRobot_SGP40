@@ -29,13 +29,11 @@ void setup() {
   Serial.begin(115200);
   
   //To get the VOC index right, it will block for 10 seconds.
-  if(mySgp40.begin() !=0){
+  while(mySgp40.begin() !=0){
     Serial.println("failed to init chip, please check if the chip connection is fine");
     delay(1000);
-  }else{
-    Serial.println("sgp40 initialized successfully!");
   }
-  
+  Serial.println("sgp40 initialized successfully ！");
   /* 
    * @breif 设置当前环境中的相对湿度和温度
    * @note  传感器内部已进行温湿度校准，若需要得到更精确的voc指数，请打开注释
