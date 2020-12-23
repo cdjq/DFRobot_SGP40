@@ -71,7 +71,7 @@ FireBeetle esp32 |       √      |             |            |
 FireBeetle esp8266 |       √      |             |            | 
 FireBeetle m0 |       √      |             |            | 
 Leonardo |       √      |             |            | 
-
+micro:bit |       √      |             |            | 
 
 
 ## History
