@@ -7,7 +7,7 @@
 *@author [yangfeng]<fary_young@outlook.com>
 *@version V1.0
 *@date 2020-12-18
-*@url https://github.com/cdjq/DFRobot_SGP40
+*@url https://github.com/DFRobot/DFRobot_SGP40
 */
 #include <DFRobot_SGP40.h>
 #include "sensirion_arch_config.h"
@@ -22,8 +22,8 @@ uint16_t DFRobot_SGP40::begin(uint32_t duration)
 {
   _pWire->begin();
   VocAlgorithm_init(&_vocaAgorithmParams);
-  int time = millis();
-  while(millis()-time<duration){
+  unsigned long timestamp = millis();
+  while(millis()-timestamp<duration){
     getVoclndex();
   }
   return sgp40MeasureTest();
@@ -92,7 +92,7 @@ uint16_t DFRobot_SGP40::readRawData()
   return value;
 }
 
-int32_t DFRobot_SGP40::getVoclndex(void)
+uint16_t DFRobot_SGP40::getVoclndex(void)
 {
   uint8_t data[3]={0,0,0};
   int32_t value;
