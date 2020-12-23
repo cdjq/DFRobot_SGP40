@@ -28,7 +28,7 @@ DFRobot_SGP40    mySgp40;
 
 void setup() {
   Serial.begin(115200);
-  
+  Serial.println("sgp40 is starting...");
   /*
    * 传感器预热时间为10s。
    * duration:初始化等待时间。单位：毫秒。建议duration>=10000ms
