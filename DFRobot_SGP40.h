@@ -10,7 +10,7 @@
 *@author [yangfeng]<fary_young@outlook.com>
 *@version V1.0
 *@date 2020-12-18
-*@url  https://github.com/cdjq/DFRobot_SGP40
+*@url  https://github.com/DFRobot/DFRobot_SGP40
 */
 #ifndef _DFROBOT_SGP40_H_
 #define _DFROBOT_SGP40_H_
@@ -81,7 +81,7 @@ public:
    * @note       400-500，ventilate, purify intensely
    * @return The VOC index measured, ranged from 0 to 500
    */
-  int32_t getVoclndex(void);
+  uint16_t getVoclndex(void);
 
 private:
   /**
