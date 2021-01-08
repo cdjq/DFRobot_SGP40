@@ -1,3 +1,11 @@
+""" file getVocIndex.py
+  # brief Getting VOC index
+  # Copyright   [DFRobot](http://www.dfrobot.com), 2010
+  # License   The MIT License (MIT)
+  # author [yangfeng]<fary_young@outlook.com>
+  # version  V1.0
+  # date  2020-01-08
+"""
 import sys
 sys.path.append('../')
 import time
