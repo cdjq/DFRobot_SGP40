@@ -17,5 +17,5 @@ mySgp40.begin(10);
 #If you want to modify the environment parameters, you can do so
 #mySgp40.setEnvParams(50,-2)
 while True:
-    print(mySgp40.getVocIndex())
+    print 'Voc index : %s'%(mySgp40.getVocIndex())
     time.sleep(1)

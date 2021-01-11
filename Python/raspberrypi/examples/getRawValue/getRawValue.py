@@ -16,5 +16,5 @@ mySgp40=DFRobot_SGP40(1,50,25)
 #mySgp40.setEnvParams(50,-2)
 while True:
     # get raw vlaue
-    print(mySgp40.measureRaw())
+    print 'Raw vlaue : %s'%(mySgp40.measureRaw())
     time.sleep(1)
