@@ -1,3 +1,4 @@
+  
 /*!
  * @file getVocIndex.ino
  * @brief Read the environmental VOC index.  Range: 0-500;
@@ -33,7 +34,7 @@ void setup() {
    * 传感器预热时间为10s。
    * duration:初始化等待时间。单位：毫秒。建议duration>=10000ms
    */
-  while(mySgp40.begin(/*duration = */10000) !=0){
+  while(mySgp40.begin(/*duration = */10000) !=true){
     Serial.println("failed to init chip, please check if the chip connection is fine");
     delay(1000);
   }

@@ -18,7 +18,7 @@ _pWire(pWire),_deviceAddr(DFRobot_SGP40_ICC_ADDR),_relativeHumidity(50),_tempera
 
 }
 
-uint16_t DFRobot_SGP40::begin(uint32_t duration)
+bool DFRobot_SGP40::begin(uint32_t duration)
 {
   _pWire->begin();
   VocAlgorithm_init(&_vocaAgorithmParams);
@@ -48,13 +48,12 @@ uint8_t DFRobot_SGP40::checkCrc(uint8_t data1,uint8_t data2)
   return crc;
 }
 
-uint32_t DFRobot_SGP40::setRhT(float relativeHumidity, float temperatureC)
+void DFRobot_SGP40::setRhT(float relativeHumidity, float temperatureC)
 {
   _relativeHumidity = relativeHumidity;
   _temperatureC = temperatureC;
   dataTransform();
   write(_rhTemData,6);
-  return 0;
 }
 
 void DFRobot_SGP40::dataTransform(void)
@@ -121,16 +120,16 @@ void DFRobot_SGP40::spg40HeaterOff()
 }
 
 
-uint16_t DFRobot_SGP40::sgp40MeasureTest()
+bool DFRobot_SGP40::sgp40MeasureTest()
 {
   uint8_t testCommand[CMD_MEASURE_TEST_SIZE]={CMD_MEASURE_TEST_H,CMD_MEASURE_TEST_L};
   uint16_t value=0;
   write(testCommand,CMD_MEASURE_TEST_SIZE);
   delay(DURATION_WAIT_MEASURE_TEST);
   if(readRawData()==TEST_OK){
-    return 0;
+    return true;
   }
-  return 1;
+  return false;
 }
 
 void DFRobot_SGP40::softReset()

@@ -33,20 +33,18 @@ To use this library, download the library file first, paste it into the \Arduino
 ## Methods
 
 ```C++
-
   /**
    * @brief  Initialization function
-   * @return A return of 0 indicates successful initialization and a return of any other value indicates unsuccessful initialization.
+   * @return return true succeed ;return false failed.
    */
-  uint16_t begin(uint32_t duration = 10000);
+  bool begin(uint32_t duration = 10000);
   
   /**
    * @brief  Set the temperature and humidity
    * @param  relativeHumidityRH  Current environmental relative humidity value, range 0-100, unit: %RH
    * @param  temperatureC  Current ambient temperature, range -10~50, unit: °C
-   * @return A return of 0 indicates a successful setting and any other value indicates a failed setting
    */
-  uint32_t setRhT(float relativeHumidity = 50,float temperatureC=25);
+  void setRhT(float relativeHumidity = 50,float temperatureC=25);
   
   /**
    * @brief  Measure VOC index after humidity compensation
@@ -57,7 +55,7 @@ To use this library, download the library file first, paste it into the \Arduino
    * @note       400-500，ventilate, purify intensely
    * @return The VOC index measured, ranged from 0 to 500
    */
-  int32_t getVoclndex(void);
+  uint16_t getVoclndex(void);
 
 ```
 
@@ -71,7 +69,7 @@ FireBeetle esp32 |       √      |             |            |
 FireBeetle esp8266 |       √      |             |            | 
 FireBeetle m0 |       √      |             |            | 
 Leonardo |       √      |             |            | 
-Micro:bit |       √      |             |            | 
+Microbit |       √      |             |            | 
 
 
 ## History

@@ -60,17 +60,16 @@ public:
   };
   /**
    * @brief  Initialization function
-   * @return A return of 0 indicates successful initialization and a return of any other value indicates unsuccessful initialization.
+   * @return return true succeed ;return false failed.
    */
-  uint16_t begin(uint32_t duration = 10000);
+  bool begin(uint32_t duration = 10000);
   
   /**
    * @brief  Set the temperature and humidity
    * @param  relativeHumidityRH  Current environmental relative humidity value, range 0-100, unit: %RH
    * @param  temperatureC  Current ambient temperature, range -10~50, unit: °C
-   * @return A return of 0 indicates a successful setting and any other value indicates a failed setting
    */
-  uint32_t setRhT(float relativeHumidity = 50,float temperatureC=25);
+  void setRhT(float relativeHumidity = 50,float temperatureC=25);
   
   /**
    * @brief  Measure VOC index after humidity compensation
@@ -86,9 +85,9 @@ public:
 private:
   /**
    * @brief  Sensor self-test
-   * @return 0:all tests passed successfully; 1：one or more tests have failed
+   * @return true:all tests passed successfully; false：one or more tests have failed
    */
-  uint16_t sgp40MeasureTest(void);
+  bool sgp40MeasureTest(void);
   
   /**
    * @brief  Soft Reset, the SGP40 will restart entering the idle mode.

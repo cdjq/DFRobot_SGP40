@@ -1,1 +1,183 @@
-""" file DFRobot_SGP40.py  # brief Define the DFRobot_SGP40 class infrastructure, the implementation of the underlying methods  # Copyright   [DFRobot](http://www.dfrobot.com), 2010  # License   The MIT License (MIT)  # author [yangfeng]<fary_young@outlook.com>  # version  V1.0  # date  2020-01-08"""import smbusimport timefrom SGP40_vocAlgorithm import VocAlgorithmclass DFRobot_SGP40:    DFRobot_SGP40_ICC_ADDR                           = 0x59    TEST_OK                                          = 0xD400                                                         CMD_HEATER_OFF_H                                 = 0x36    CMD_HEATER_OFF_L                                 = 0x15    CMD_HEATER_OFF_SIZE                              = 2                                                         CMD_MEASURE_TEST_H                               = 0x28    CMD_MEASURE_TEST_L                               = 0x0E    CMD_MEASURE_TEST_SIZE                            = 2                                                         CMD_SOFT_RESET_H                                 = 0x00    CMD_SOFT_RESET_L                                 = 0x06    CMD_SOFT_RESET_SIZE                              = 2                                                         CMD_MEASURE_RAW_H                                = 0x26    CMD_MEASURE_RAW_L                                = 0x0F                                                         INDEX_MEASURE_RAW_H                              = 0    INDEX_MEASURE_RAW_L                              = 1    INDEX_RH_H                                       = 2    INDEX_RH_L                                       = 3    INDEX_RH_CHECK_CRC                               = 4    INDEX_TEM_H                                      = 5    INDEX_TEM_L                                      = 6    INDEX_TEM_CHECK_CRC                              = 7                                                         DURATION_READ_RAW_VOC                            = 30    DURATION_WAIT_MEASURE_TEST                       = 250        CRC_TABLE = [        0, 49, 98, 83, 196, 245, 166, 151, 185, 136, 219, 234, 125, 76, 31, 46,        67, 114, 33, 16, 135, 182, 229, 212, 250, 203, 152, 169, 62, 15, 92, 109,        134, 183, 228, 213, 66, 115, 32, 17, 63, 14, 93, 108, 251, 202, 153, 168,        197, 244, 167, 150, 1, 48, 99, 82, 124, 77, 30, 47, 184, 137, 218, 235,        61, 12, 95, 110, 249, 200, 155, 170, 132, 181, 230, 215, 64, 113, 34, 19,        126, 79, 28, 45, 186, 139, 216, 233, 199, 246, 165, 148, 3, 50, 97, 80,        187, 138, 217, 232, 127, 78, 29, 44, 2, 51, 96, 81, 198, 247, 164, 149,        248, 201, 154, 171, 60, 13, 94, 111, 65, 112, 35, 18, 133, 180, 231, 214,        122, 75, 24, 41, 190, 143, 220, 237, 195, 242, 161, 144, 7, 54, 101, 84,        57, 8, 91, 106, 253, 204, 159, 174, 128, 177, 226, 211, 68, 117, 38, 23,        252, 205, 158, 175, 56, 9, 90, 107, 69, 116, 39, 22, 129, 176, 227, 210,        191, 142, 221, 236, 123, 74, 25, 40, 6, 55, 100, 85, 194, 243, 160, 145,        71, 118, 37, 20, 131, 178, 225, 208, 254, 207, 156, 173, 58, 11, 88, 105,        4, 53, 102, 87, 192, 241, 162, 147, 189, 140, 223, 238, 121, 72, 27, 42,        193, 240, 163, 146, 5, 52, 103, 86, 120, 73, 26, 43, 188, 141, 222, 239,        130, 179, 224, 209, 70, 119, 36, 21, 59, 10, 89, 104, 255, 206, 157, 172        ]            def __init__(self,bus = 1,relativeHumidity = 50,temperatureC=25):        """ Module init                :param bus:int Set to IICBus        :param relativeHumidity:float Set to relativeHumidity        :param temperatureC:float Set to temperature        """        self.i2cbus=smbus.SMBus(bus)        self.myVocAlgorithm=VocAlgorithm()        self.i2c_addr = self.DFRobot_SGP40_ICC_ADDR        self._temperatureC = temperatureC        self._relativeHumidity = relativeHumidity        self.rh=0        self.temc=0        self.rhH=0        self.rhL=0        self.temcH=0        self.temcL=0        self.temCRC=0        self.rhCRC=0            def setEnvParams(relativeHumidity,temperatureC):        """ Set temperature and humidity                :param relativeHumidity:float Set to relativeHumidity        :param temperatureC:float Set to temperature        """        self._temperatureC = temperatureC        self._relativeHumidity = relativeHumidity            def begin(self,duration = 10):        """ start equipment                :param duration:int Set to Warm-up time        :return int equipment condition          : 0 succeed          : 1 failed         """        self.myVocAlgorithm.VocAlgorithm_init()        timeOne = int(time.time())        while(int(time.time())-timeOne<duration):            self.getVocIndex()        return self._measureTest()        def _dataTransform(self):        """ Convert environment parameters        """        self.rh = int(((self._relativeHumidity*65535)/100+0.5))        self.temc = int(((self._temperatureC+45)*(65535/175)+0.5))        self.rhH=int(self.rh)>>8        self.rhL=int(self.rh)&0x00FF        self.rhCRC=self._Crc(self.rhH,self.rhL)        self.temcH=int(self.temc)>>8        self.temcL=int(self.temc)&0x00FF        self.temCRC=self._Crc(self.temcH,self.temcL)            def measureRaw(self):        """ Get raw data                : return int collect result          :-1 collect failed          :>0 the collection value        """        vocIndex=0        self._dataTransform()        self.i2cbus.write_i2c_block_data(self.i2c_addr,self.CMD_MEASURE_RAW_H, [self.CMD_MEASURE_RAW_L,self.rhH,self.rhL,self.rhCRC,self.temcH,self.temcL,self.temCRC])        time.sleep(0.03)        raw = self.i2cbus.read_i2c_block_data(self.i2c_addr,0x00,3)        if self._checkCrc(raw)== 0:          return raw[0]<<8 | raw[1]        else:          return -1            def getVocIndex(self):        """ Measure VOC index after humidity compensation        :note  VOC index can indicate the quality of the air directly. The larger the value, the worse the air quality.        :note    0-100,no need to ventilate, purify        :note    100-200,no need to ventilate, purify        :note    200-400,ventilate, purify        :note    00-500,ventilate, purify intensely        :return int The VOC index measured, ranged from 0 to 500        """        raw=self.measureRaw()        if raw<0:            return -1        else:            vocIndex=self.myVocAlgorithm.VocAlgorithm_process(raw)            return vocIndex    def _measureTest(self):        """ Sensor self-test                :return int self-test condition          : 0 succeed          : 1 failed         """        self.i2cbus.write_i2c_block_data(self.i2c_addr,self.CMD_MEASURE_TEST_H, [self.CMD_MEASURE_TEST_L])        time.sleep(0.25)        raw = self.i2cbus.read_i2c_block_data(self.i2c_addr,0x00,2)        if raw[0]==0xD4 and raw[1]==0x00:            return 0        else:            return 1    def _reset(self):        """ Sensor reset                """        self.i2cbus.write_i2c_block_data(self.i2c_addr,self.CMD_SOFT_RESET_H, [self.CMD_SOFT_RESET_L])        def _heaterOff(self):        """ spg40 Heater Off. Turn the hotplate off and stop the measurement. Subsequently, the sensor enters the idle mode.                """        self.i2cbus.write_i2c_block_data(self.i2c_addr,self.CMD_HEATER_OFF_H, [self.CMD_HEATER_OFF_L])    def _checkCrc(self, raw):        """ Verify the calibration value of the sensor                :param raw : list Parameter to check        :return int Check result          :-1 Check failed          : 0 Check succeed        """        assert (len(raw) == 3)        if self._Crc(raw[0], raw[1]) != raw[2]:            return -1        return 0    def _Crc(self, data1, data2):        """ CRC                :param  data1  High 8 bits data        :param  data2  LOW 8 bits data        :return int Calibration value        """        crc = 0xff        crc ^= data1        crc = self.CRC_TABLE[crc]        if data2 is not None:            crc ^= data2            crc = self.CRC_TABLE[crc]        return crc
+""" 
+  @file DFRobot_SGP40.py
+  @note DFRobot_SGP40 Class infrastructure, implementation of underlying methods
+  @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
+  @licence     The MIT License (MIT)
+  @author      [yangfeng]<fary_young@outlook.com> 
+  version  V1.0
+  date  2021-01-12
+  @get from https://www.dfrobot.com
+  @url https://github.com/cdjq/DFRobot_SGP40
+"""
+
+import smbus
+import time
+from DFRobot_SGP40_VOCAlgorithm import DFRobot_VOCAlgorithm
+
+class DFRobot_SGP40:
+    DFRobot_SGP40_ICC_ADDR                           = 0x59
+    TEST_OK_H                                        = 0xD4
+    TEST_OK_L                                        = 0x00
+    CMD_HEATER_OFF_H                                 = 0x36
+    CMD_HEATER_OFF_L                                 = 0x15
+                                                     
+    CMD_MEASURE_TEST_H                               = 0x28
+    CMD_MEASURE_TEST_L                               = 0x0E
+                                                     
+    CMD_SOFT__reset_H                                = 0x00
+    CMD_SOFT__reset_L                                = 0x06
+                                                     
+    CMD_MEASURE_RAW_H                                = 0x26
+    CMD_MEASURE_RAW_L                                = 0x0F
+
+    DURATION_READ_RAW_VOC                            = 0.03
+    DURATION_WAIT_MEASURE_TEST                       = 0.25
+    OFFSET                                           = 0x00
+        
+    def __init__(self,bus = 1,relative_humidity = 50,temperature_c = 25):
+        """ Module init
+        
+        :param bus:int Set to IICBus
+        :param relative_humidity:float Set to relative_humidity
+        :param temperature_c:float Set to temperature
+        """
+        self.__i2cbus = smbus.SMBus(bus)
+        self.__my_vocalgorithm = DFRobot_VOCAlgorithm()
+        self.__i2c_addr = self.DFRobot_SGP40_ICC_ADDR
+        self.__temperature_c = temperature_c
+        self.__relative_humidity = relative_humidity
+        self.__rh = 0
+        self.__temc = 0
+        self.__rh_h = 0
+        self.__rh_l = 0
+        self.__temc_h = 0
+        self.__temc_l = 0
+        self.__temc__crc = 0
+        self.__rh__crc = 0
+        
+    def set_envparams(relative_humidity,temperature_c):
+        """ Set temperature and humidity
+        
+        :param relative_humidity:float Set to relative_humidity
+        :param temperature_c:float Set to temperature
+        """
+        self.__temperature_c = temperature_c
+        self.__relative_humidity = relative_humidity
+        
+    def begin(self,duration = 10):
+        """ start equipment
+        
+        :param duration:int Set to Warm-up time
+        :return int equipment condition
+          : 0 succeed
+          : 1 failed 
+        """
+        self.__my_vocalgorithm.vocalgorithm_init()
+        timeOne = int(time.time())
+        while(int(time.time())-timeOne<duration):
+            self.get_voc_index()
+        return self.__measure_test()
+    
+    def __data_transform(self):
+        """ Convert environment parameters
+
+        """
+        self.__rh = int(((self.__relative_humidity*65535)/100+0.5))
+        self.__temc = int(((self.__temperature_c+45)*(65535/175)+0.5))
+        self.__rh_h = int(self.__rh)>>8
+        self.__rh_l = int(self.__rh)&0xFF
+        self.__rh__crc = self.__crc(self.__rh_h,self.__rh_l)
+        self.__temc_h = int(self.__temc)>>8
+        self.__temc_l = int(self.__temc)&0xFF
+        self.__temc__crc = self.__crc(self.__temc_h,self.__temc_l)
+        
+    def measure_raw(self):
+        """ Get raw data
+        
+        : return int collect result
+          :-1 collect failed
+          :>0 the collection value
+        """
+        self.__data_transform()
+        self.__i2cbus.write_i2c_block_data(self.__i2c_addr,self.CMD_MEASURE_RAW_H, [self.CMD_MEASURE_RAW_L,self.__rh_h,self.__rh_l,self.__rh__crc,self.__temc_h,self.__temc_l,self.__temc__crc])
+        time.sleep(self.DURATION_READ_RAW_VOC)
+        raw = self.__i2cbus.read_i2c_block_data(self.__i2c_addr,self.OFFSET,3)
+        if self.__check__crc(raw) == 0:
+          return raw[0]<<8 | raw[1]
+        else:
+          return -1
+        
+    def get_voc_index(self):
+        """ Measure VOC index after humidity compensation
+        :note  VOC index can indicate the quality of the air directly. The larger the value, the worse the air quality.
+        :note    0-100,no need to ventilate, purify
+        :note    100-200,no need to ventilate, purify
+        :note    200-400,ventilate, purify
+        :note    00-500,ventilate, purify intensely
+        :return int The VOC index measured, ranged from 0 to 500
+        """
+        raw = self.measure_raw()
+        if raw<0:
+            return -1
+        else:
+            vocIndex = self.__my_vocalgorithm.vocalgorithm_process(raw)
+            return vocIndex
+            
+    def __measure_test(self):
+        """ Sensor self-test
+        
+        :return int self-test condition
+          : 0 succeed
+          : 1 failed 
+        """
+        self.__i2cbus.write_i2c_block_data(self.__i2c_addr,self.CMD_MEASURE_TEST_H, [self.CMD_MEASURE_TEST_L])
+        time.sleep(self.DURATION_WAIT_MEASURE_TEST)
+        raw = self.__i2cbus.read_i2c_block_data(self.__i2c_addr,self.OFFSET,2)
+        if raw[0] == self.TEST_OK_H and raw[1] == self.TEST_OK_L :
+            return 0
+        else:
+            return 1
+            
+    def __reset(self):
+        """ Sensor reset
+        
+        """
+        self.__i2cbus.write_i2c_block_data(self.__i2c_addr,self.CMD_SOFT__reset_H, [self.CMD_SOFT__reset_L])
+    
+    def __heater_off(self):
+        """ spg40 Heater Off. Turn the hotplate off and stop the measurement. Subsequently, the sensor enters the idle mode.
+        
+        """
+        self.__i2cbus.write_i2c_block_data(self.__i2c_addr,self.CMD_HEATER_OFF_H, [self.CMD_HEATER_OFF_L])
+
+    def __check__crc(self, raw):
+        """ Verify the calibration value of the sensor
+        
+        :param raw : list Parameter to check
+        :return int Check result
+          :-1 Check failed
+          : 0 Check succeed
+        """
+        assert (len(raw) == 3)
+        if self.__crc(raw[0], raw[1]) != raw[2]:
+            return -1
+        return 0
+
+    def __crc(self,data_1,data_2):
+        """ CRC
+        
+        :param  data1  High 8 bits data
+        :param  data2  LOW 8 bits data
+        :return int Calibration value
+        """
+        crc = 0xff
+        list = [data_1,data_2]
+        for i in range(0,2):
+            crc = crc^list[i]
+            for bit in range(0,8):
+                if(crc&0x80):
+                    crc = ((crc <<1)^0x31)
+                else:
+                    crc = (crc<<1)
+            crc = crc&0xFF
+        return crc
