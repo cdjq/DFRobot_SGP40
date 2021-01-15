@@ -7,7 +7,7 @@
 *@copyright Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
 *@SKU SEN0392
 *@licence The MIT License (MIT)
-*@author [yangfeng]<fary_young@outlook.com>
+*@author [yangfeng]<feng.yang@dfrobot.com>
 *@version V1.0
 *@date 2020-12-18
 *@url  https://github.com/DFRobot/DFRobot_SGP40

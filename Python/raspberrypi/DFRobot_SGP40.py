@@ -3,11 +3,11 @@
   @note DFRobot_SGP40 Class infrastructure, implementation of underlying methods
   @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
   @licence     The MIT License (MIT)
-  @author      [yangfeng]<fary_young@outlook.com> 
+  @author      [yangfeng]<feng.yang@dfrobot.com> 
   version  V1.0
-  date  2021-01-12
+  date  2021-01-15
   @get from https://www.dfrobot.com
-  @url https://github.com/cdjq/DFRobot_SGP40
+  @url https://github.com/DFRobot/DFRobot_SGP40
 """
 
 import smbus
