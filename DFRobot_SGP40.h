@@ -55,11 +55,16 @@ public:
   #define DURATION_WAIT_MEASURE_TEST                        250
   
 public:
+   /**
+   * @brief  constructed function
+   * @param  pWire  When constructing a device, you can specify its twowire
+   */
   DFRobot_SGP40(TwoWire *pWire=&Wire);
   ~DFRobot_SGP40(){
   };
   /**
    * @brief  Initialization function
+   * @param duration Warm-up time
    * @return return true succeed ;return false failed.
    */
   bool begin(uint32_t duration = 10000);
