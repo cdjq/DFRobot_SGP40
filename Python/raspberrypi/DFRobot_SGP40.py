@@ -77,19 +77,6 @@ class DFRobot_SGP40:
         while(int(time.time())-timeOne<duration):
             self.get_voc_index()
         return self.__measure_test()
-    
-    def __data_transform(self):
-        """ Convert environment parameters
-
-        """
-        self.__rh = int(((self.__relative_humidity*65535)/100+0.5))
-        self.__temc = int(((self.__temperature_c+45)*(65535/175)+0.5))
-        self.__rh_h = int(self.__rh)>>8
-        self.__rh_l = int(self.__rh)&0xFF
-        self.__rh__crc = self.__crc(self.__rh_h,self.__rh_l)
-        self.__temc_h = int(self.__temc)>>8
-        self.__temc_l = int(self.__temc)&0xFF
-        self.__temc__crc = self.__crc(self.__temc_h,self.__temc_l)
         
     def measure_raw(self):
         """ Get raw data
@@ -122,7 +109,20 @@ class DFRobot_SGP40:
         else:
             vocIndex = self.__my_vocalgorithm.vocalgorithm_process(raw)
             return vocIndex
-            
+          
+    def __data_transform(self):
+        """ Convert environment parameters
+
+        """
+        self.__rh = int(((self.__relative_humidity*65535)/100+0.5))
+        self.__temc = int(((self.__temperature_c+45)*(65535/175)+0.5))
+        self.__rh_h = int(self.__rh)>>8
+        self.__rh_l = int(self.__rh)&0xFF
+        self.__rh__crc = self.__crc(self.__rh_h,self.__rh_l)
+        self.__temc_h = int(self.__temc)>>8
+        self.__temc_l = int(self.__temc)&0xFF
+        self.__temc__crc = self.__crc(self.__temc_h,self.__temc_l) 
+        
     def __measure_test(self):
         """ Sensor self-test
         
