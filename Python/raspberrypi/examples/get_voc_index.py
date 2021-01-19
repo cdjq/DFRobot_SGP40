@@ -18,13 +18,14 @@ from DFRobot_SGP40 import DFRobot_SGP40
 sgp40=DFRobot_SGP40(bus = 1,relative_humidity = 50,temperature_c = 25)
 
 #set Warm-up time
-print 'Please wait 10 seconds...'
-sgp40.begin(10);
+print ('sgp40 is starting, the reading can be taken after 10 seconds...')
+sgp40.begin(10)
+print ('sgp40 initialized successfully!')
 
 #If you want to modify the environment parameters, you can do so
 #elativeHumidity(0-100%RH)  temperature(-10~50 centigrade)
 #sgp40.set_envparams(50,-2)
 
 while True:
-    print 'Voc index : %d'%(sgp40.get_voc_index())
+    print ('Voc index : %d'%(sgp40.get_voc_index()))
     time.sleep(1)
