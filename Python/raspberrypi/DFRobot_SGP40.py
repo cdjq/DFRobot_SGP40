@@ -38,8 +38,8 @@ class DFRobot_SGP40:
         """ Module init
         
         :param bus:int Set to IICBus
-        :param relative_humidity:float Set to relative_humidity
-        :param temperature_c:float Set to temperature
+        :param relative_humidity:float  Set relative_humidity
+        :param temperature_c:float  Set temperature
         """
         self.__i2cbus = smbus.SMBus(bus)
         self.__my_vocalgorithm = DFRobot_VOCAlgorithm()
@@ -58,17 +58,17 @@ class DFRobot_SGP40:
     def set_envparams(relative_humidity,temperature_c):
         """ Set temperature and humidity
         
-        :param relative_humidity:float Set to relative_humidity
-        :param temperature_c:float Set to temperature
+        :param relative_humidity:float  Set relative_humidity
+        :param temperature_c:float  Set temperature
         """
         self.__temperature_c = temperature_c
         self.__relative_humidity = relative_humidity
         
     def begin(self,duration = 10):
-        """ start equipment
+        """ start device
         
-        :param duration:int Set to Warm-up time
-        :return int equipment condition
+        :param duration:int  Set preheat time
+        :return int  Device condition
           : 0 succeed
           : 1 failed 
         """
@@ -81,9 +81,9 @@ class DFRobot_SGP40:
     def measure_raw(self):
         """ Get raw data
         
-        : return int collect result
-          :-1 collect failed
-          :>0 the collection value
+        : return int  Collect result
+          :-1  collection failed
+          :>0  the collected value
         """
         self.__data_transform()
         self.__i2cbus.write_i2c_block_data(self.__i2c_addr,self.CMD_MEASURE_RAW_H, [self.CMD_MEASURE_RAW_L,self.__rh_h,self.__rh_l,self.__rh__crc,self.__temc_h,self.__temc_l,self.__temc__crc])
@@ -97,10 +97,10 @@ class DFRobot_SGP40:
     def get_voc_index(self):
         """ Measure VOC index after humidity compensation
         :note  VOC index can indicate the quality of the air directly. The larger the value, the worse the air quality.
-        :note    0-100,no need to ventilate, purify
-        :note    100-200,no need to ventilate, purify
-        :note    200-400,ventilate, purify
-        :note    00-500,ventilate, purify intensely
+        :note    0-100, no need to ventilate, purify
+        :note    100-200, no need to ventilate, purify
+        :note    200-400, ventilate, purify
+        :note    00-500, ventilate, purify intensely
         :return int The VOC index measured, ranged from 0 to 500
         """
         raw = self.measure_raw()
