@@ -55,7 +55,7 @@ void setup() {
 void loop() {
   /* 
    * Get VOC index 
-   * VOC index can directly indicates the condition of air quality. The larger the value, the worse the air quality
+   * VOC index can directly indicate the condition of air quality. The larger the value, the worse the air quality
    *    0-100，no need to ventilate,purify
    *    100-200，no need to ventilate,purify
    *    200-400，ventilate,purify
