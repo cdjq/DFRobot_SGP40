@@ -64,13 +64,13 @@ To use this library, download the library file first, paste it into the \Arduino
 
 MCU                | Work Well | Work Wrong | Untested  | Remarks
 ------------------ | :----------: | :----------: | :---------: | -----
-Arduino uno |       √      |             |            | 
-FireBeetle esp32 |       √      |             |            | 
-FireBeetle esp8266 |       √      |             |            | 
-FireBeetle m0 |       √      |             |            | 
+Arduino Uno |       √      |             |            | 
+FireBeetle Esp32 |       √      |             |            | 
+FireBeetle Esp8266 |       √      |             |            | 
+FireBeetle M0 |       √      |             |            | 
 Leonardo |       √      |             |            | 
 Microbit |       √      |             |            | 
-RaspberryPi |       √      |             |            | 
+Raspberry Pi |       √      |             |            | 
 
 ## History
 
