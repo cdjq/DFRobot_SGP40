@@ -23,7 +23,7 @@ sgp40.begin(10)
 print ('sgp40 initialized successfully!')
 
 #If you want to modify the environment parameters, you can do so
-#elativeHumidity(0-100%RH)  temperature(-10~50 centigrade)
+#elativeHumidity(0-90%RH)  temperature(-10~50 centigrade)
 #sgp40.set_envparams(50,-2)
 
 while True:
