@@ -41,7 +41,7 @@ To use this library, download the library file first, paste it into the \Arduino
   
   /**
    * @brief  Set the temperature and humidity
-   * @param  relativeHumidityRH  Current environmental relative humidity value, range 0-100, unit: %RH
+   * @param  relativeHumidityRH  Current environmental relative humidity value, range 0-90, unit: %RH
    * @param  temperatureC  Current ambient temperature, range -10~50, unit: °C
    */
   void setRhT(float relativeHumidity = 50,float temperatureC=25);
