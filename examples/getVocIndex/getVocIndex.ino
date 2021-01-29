@@ -46,9 +46,9 @@ void setup() {
    * Set the relative humidity and temperature of current environment 
    * The sensor has internal temerpature & humidity calibration. For more accurate VOC index, please open the function setRhT().
    * relativeHumidity：ambient relative humidity, refer to the moisture content in air. Range：0-90, unit: %RH，e.g. 50%
-   * temperature：ambient temperature. Range: -10~50, unit: °C, e.g. 20°C
+   * temperatureC：ambient temperature. Range: -10~50, unit: °C, e.g. 20°C
    */
-  //mySgp40.setRhT(/*relativeHumidity = */ 50, /*temperature = */ 20);
+  //mySgp40.setRhT(/*relativeHumidity = */ 50, /*temperatureC = */ 20);
   
 }
 
