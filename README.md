@@ -70,7 +70,7 @@ FireBeetle esp8266 |       √      |             |            |
 FireBeetle m0 |       √      |             |            | 
 Leonardo |       √      |             |            | 
 Microbit |       √      |             |            | 
-
+RaspberryPi |       √      |             |            | 
 
 ## History
 
