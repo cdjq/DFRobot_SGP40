@@ -4,7 +4,7 @@
 
 ## DFRobot_SGP40 Library for Arduino
 ---------------------------------------------------------
-Provide an Arduino library for the SGP40 modules.
+Provide an Arduino library for the SGP40 module.
 
 ## Table of Contents
 
