@@ -1,7 +1,7 @@
 /**
 *@file DFRobot_SGP40.h
-*@brief Define the infrastructure for the DFRobot_SGP40 class
-*@n This is a DFRobot_SGP40 sensor that supports IIC communication. The IIC address is immutable,0x59. The functions are as follows:
+*@brief Define the basic structure for the DFRobot_SGP40 class
+*@n This is a DFRobot_SGP40 sensor that supports IIC communication. The IIC address cannot be changed, default to 0x59. The functions are as follows:
 *@n Function 1: Set ambient temperature and humidity for accurate calibration. Relative humidity unit: %RH, range: 0-100; Temperature unit: °C, range: -10~50
 *@n Function 2: Read VOC index , range 0-500
 *@copyright Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
@@ -57,7 +57,7 @@ public:
 public:
    /**
    * @brief  constructed function
-   * @param  pWire  When constructing a device, you can specify its twowire
+   * @param  pWire  When instantiate this class, you can specify its twowire
    */
   DFRobot_SGP40(TwoWire *pWire=&Wire);
   ~DFRobot_SGP40(){
@@ -114,7 +114,7 @@ private:
   uint8_t checkCrc(uint8_t data1,uint8_t data2);
   
   /**
-   * @brief  Conversion of relative humidity in % and temperature in °C into ticks as the input parameters of the measurement command
+   * @brief  Convert relative humidity in % and temperature in °C into the input parameters of the measurement command
    */
   void dataTransform(void);
   
