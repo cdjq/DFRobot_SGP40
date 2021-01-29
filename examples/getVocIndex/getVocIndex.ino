@@ -15,12 +15,12 @@
 #include <DFRobot_SGP40.h>
 
 /* 
- * 方法一：传入指定的I2C对象地址
+ * Method 1: pass in the specified I2C object address 
  * #include <Wire.h>
  * DFRobot_SGP40    mySgp40(&Wire);
  
- * 方法二：使用默认的I2C对象&Wire
- * I2C 默认地址：0x59
+ * Method 2: use the default I2C object&Wire
+ * I2C Default Address：0x59
  */
 
 //#include <Wire.h>
@@ -32,8 +32,8 @@ void setup() {
   Serial.begin(115200);
   Serial.println("sgp40 is starting, the reading can be taken after 10 seconds...");
   /*
-   * 传感器预热时间为10s。
-   * duration:初始化等待时间。单位：毫秒。建议duration>=10000ms
+   * Sensor preheat time: 10s
+   * duration: init wait time. Unit: ms. It is suggested: duration>=10000ms
    */
   while(mySgp40.begin(/*duration = */10000) !=true){
     Serial.println("failed to init chip, please check if the chip connection is fine");
@@ -43,10 +43,10 @@ void setup() {
   Serial.println("sgp40 initialized successfully!");
   Serial.println("----------------------------------------------");
   /* 
-   * 设置当前环境中的相对湿度和温度
-   * 传感器内部已进行温湿度校准，若需要得到更精确的voc指数，请打开注释
-   * relativeHumidity：环境相对湿度，指空气中的水汽含量。范围：0-100，单位：%RH，例如：50%
-   * temperature：环境温度。范围：-10~50，单位：°C，例如：20°C
+   * Set the relative humidity and temperature of current environment 
+   * The sensor has internal temerpature & humidity calibration. For more accurate VOC index, please open the function setRhT().
+   * relativeHumidity：ambient relative humidity, refer to the moisture content in air. Range：0-100, unit: %RH，e.g. 50%
+   * temperature：ambient temperature. Range: -10~50, unit: °C, e.g. 20°C
    */
   //mySgp40.setRhT(/*relativeHumidity = */ 50, /*temperature = */ 20);
   
@@ -54,13 +54,13 @@ void setup() {
 
 void loop() {
   /* 
-   * 获取voc指数
-   * voc指数可直接指示空气质量的好坏。数值越大，空气质量越差
+   * Get VOC index 
+   * VOC index can directly indicates the condition of air quality. The larger the value, the worse the air quality
    *    0-100，no need to ventilate,purify
    *    100-200，no need to ventilate,purify
    *    200-400，ventilate,purify
    *    400-500，ventilate,purify intensely
-   * 返回voc指数，范围：0-500
+   * Return VOC index, range: 0-500
    */
   uint16_t index = mySgp40.getVoclndex();
   
