@@ -74,8 +74,8 @@ Microbit |       √      |             |            |
 
 ## History
 
-- data 2020-12-18
-- version V1.0
+- Data 2020-12-18
+- Version V1.0
 
 
 ## Credits
