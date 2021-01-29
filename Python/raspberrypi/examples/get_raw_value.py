@@ -20,7 +20,7 @@ sgp40=DFRobot_SGP40(bus = 1,relative_humidity = 50,temperature_c = 25)
 
 
 #If you want to modify the environment parameters, you can do so
-#elativeHumidity(0-100%RH)  temperature(-10~50 centigrade)
+#elativeHumidity(0-90%RH)  temperature(-10~50 centigrade)
 #sgp40.set_envparams(relative_humidity = 50,temperature_c = 25)
 
 while True:
