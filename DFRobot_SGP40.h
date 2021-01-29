@@ -3,7 +3,7 @@
 *@brief Define the basic structure for the DFRobot_SGP40 class
 *@n This is a DFRobot_SGP40 sensor that supports IIC communication. The IIC address cannot be changed, default to 0x59. The functions are as follows:
 *@n Function 1: Set ambient temperature and humidity for accurate calibration. Relative humidity unit: %RH, range: 0-100; Temperature unit: °C, range: -10~50
-*@n Function 2: Read VOC index , range 0-500
+*@n Function 2: Read VOC index, range 0-500
 *@copyright Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
 *@SKU SEN0392
 *@licence The MIT License (MIT)
