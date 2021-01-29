@@ -15,7 +15,7 @@ import time
 from DFRobot_SGP40 import DFRobot_SGP40
 
 
-#set IICbus elativeHumidity(0-100%RH)  temperature(-10~50 centigrade)
+#set IICbus elativeHumidity(0-90%RH)  temperature(-10~50 centigrade)
 sgp40=DFRobot_SGP40(bus = 1,relative_humidity = 50,temperature_c = 25)
 
 
