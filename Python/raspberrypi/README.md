@@ -22,8 +22,8 @@ VOC index can be read through SGP40's I2C interface. The data will be printed th
 
 ## Feature
 
-1.  Set ambient temperature and humidity for accurate calibration. Relative humidity unit: %RH, range: 0-100; Temperature unit: °C, range: -10~50
-2.  Read VOC index , range 0-500
+1.  The sensor can be directly used without calibration. For advanced users, there is a API reserved for accurate calibration. Relative humidity unit: %RH, range: 0-100; Temperature unit: °C, range: -10~50
+2.  Read VOC index, range 0-500
 
 ## Installation
 
@@ -35,17 +35,17 @@ To use this library, download the library file first, paste it into the \Arduino
 def set_envparams(relative_humidity,temperature_c):
     """ Set temperature and humidity
     
-    :param relative_humidity:float Set to relative_humidity
-    :param temperature_c:float Set to temperature
+    :param relative_humidity:float  Set relative_humidity
+    :param temperature_c:float   Set temperature
     """
     self.__temperature_c = temperature_c
     self.__relative_humidity = relative_humidity
     
 def begin(self,duration = 10):
-    """ start equipment
+    """ start device
     
-    :param duration:int Set to Warm-up time
-    :return int equipment condition
+    :param duration:int  Set preheat time
+    :return int  Device condition
       : 0 succeed
       : 1 failed 
     """
@@ -58,9 +58,9 @@ def begin(self,duration = 10):
 def measure_raw(self):
     """ Get raw data
     
-    : return int collect result
-      :-1 collect failed
-      :>0 the collection value
+    : return int  Collect result
+      :-1 Collection failed
+      :>0 the collected value
     """
     self.__data_transform()
     self.__i2cbus.write_i2c_block_data(self.__i2c_addr,self.CMD_MEASURE_RAW_H, [self.CMD_MEASURE_RAW_L,self.__rh_h,self.
@@ -74,11 +74,11 @@ def measure_raw(self):
 def get_voc_index(self):
     """ Measure VOC index after humidity compensation
     :note  VOC index can indicate the quality of the air directly. The larger the value, the worse the air quality.
-    :note    0-100,no need to ventilate, purify
-    :note    100-200,no need to ventilate, purify
-    :note    200-400,ventilate, purify
-    :note    00-500,ventilate, purify intensely
-    :return int The VOC index measured, ranged from 0 to 500
+    :note    0-100, no need to ventilate, purify
+    :note    100-200, no need to ventilate, purify
+    :note    200-400, ventilate, purify
+    :note    00-500, ventilate, purify intensely
+    :return int  The VOC index measured, ranged from 0 to 500
     """
     raw = self.measure_raw()
     if raw<0:
@@ -95,8 +95,8 @@ def get_voc_index(self):
 
 ## History
 
-- data 2021-01-12
-- version V1.0
+- Data 2021-01-12
+- Version V1.0
 
 
 ## Credits
